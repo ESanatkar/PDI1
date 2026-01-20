@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "LCSCI4207-lab2",
+			"path": "../../../../LCSCI4207-lab2/LCSCI4207-lab2"
+		},
+		{
+			"name": "fundies",
+			"path": "../../../../fundies/fundies"
+		},
+		{
+			"name": "PDI1",
+			"path": "../.."
+		}
+	],
+	"settings": {}
+}

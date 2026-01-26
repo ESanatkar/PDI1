@@ -18,11 +18,21 @@ def personality_mapping(villagers: dict[str, str]) -> dict[str, list[str]]:
     Returns:
         Dictionary mapping personality type to sorted list of villager names
     """
-    # YOUR CODE HERE
-    # Remove pass when you implement
-    pass
+    
+    compiled = {}
 
+    for name, personality in villagers.items():
+        if personality not in compiled:
+            compiled[personality] = []
+        
+        compiled[personality].append(name)
 
+    for personality in compiled:
+        compiled[personality].sort()
+
+    return compiled
+
+    
 # YOUR TESTS HERE (BONUS)
 # Write at least 3 tests for invert_personality_mapping
 # Test function names must start with "test_"

@@ -1,3 +1,6 @@
+from math import prod
+import time
+
 """
 Exercise 1: List Operations
 TASK: Write the function to make the tests pass
@@ -21,14 +24,19 @@ def process_game_ratings(ratings: list[int]) -> list[int]:
     Returns:
         Sorted list of valid ratings in ascending order
     """
-    # YOUR CODE HERE
-    # Remove pass when you implement
-    pass
+    print(ratings)
 
+    ascending_ratings: list = []
+
+    for rating in ratings:
+        if rating >0 and rating <=10:
+            ascending_ratings.append(rating)
+
+    ascending_ratings.sort(reverse=False)
+    return ascending_ratings
 
 def test_process_game_ratings_basic():
     assert process_game_ratings([7, 9, 5, 10]) == [5, 7, 9, 10]
-
 
 def test_process_game_ratings_with_invalid():
     assert process_game_ratings([7, -2, 9, 15, 5]) == [5, 7, 9]

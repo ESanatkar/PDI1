@@ -1,7 +1,3 @@
-import random
-from math import prod
-import time
-
 '''
 # Exercise 1
 

@@ -48,7 +48,6 @@ class Trainer:
 
 ash = Trainer("Ash")
 
-
 print(ash.get_pokemon_by_type(WaterType)) # Returns []
 
 ash.add_to_team(FireType("Charmander", 39, 12, 8, "Ember", 40, 0.2))

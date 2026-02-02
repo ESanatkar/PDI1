@@ -72,18 +72,12 @@ class FireType(Pokemon):
         burn_chance: float,
     ) -> None:
         """Initialise a new Fire type Pokemon."""
-        self.name: str = name
-        self.max_hp: int = max_hp
-        self.current_hp: int = max_hp
-        self.attack: int = attack
-        self.defence: int = defence
-        self.move: str = move
-        self.move_power: int = move_power
+        super().__init__(name, max_hp, attack, defence, move, move_power)
         self.burn_chance: float = burn_chance
 
     def description(self) -> str:
         """Return a description of this Fire type Pokemon."""
-        return f"{self.name} is a Fire type Pokemon with a {self.burn_chance * 100}% chance to burn with attacks."
+        return f"{self.name} is a Fire type Pokemon with {self.burn_chance * 100}% burn chance."
 
 class WaterType(Pokemon):
     """A Water type Pokemon."""
@@ -99,15 +93,29 @@ class WaterType(Pokemon):
         swim_speed: int,
     ) -> None:
         """Initialise a new Water type Pokemon."""
-        self.name: str = name
-        self.max_hp: int = max_hp
-        self.current_hp: int = max_hp
-        self.attack: int = attack
-        self.defence: int = defence
-        self.move: str = move
-        self.move_power: int = move_power
+        super().__init__(name, max_hp, attack, defence, move, move_power)
         self.swim_speed: int = swim_speed
 
     def description(self) -> str:
         """Return a description of this Water type Pokemon."""
-        return f"{self.name} is a Water type Pokemon with a swim speed of {self.swim_speed}."
+        return f"{self.name} is a Water type Pokemon with swim speed {self.swim_speed}."
+
+# Normal types - Pokemon(name, max_hp, attack, defence, move, move_power)
+pikachu = Pokemon("Pikachu", 35, 11, 7, "Quick Attack", 10)
+eevee = Pokemon("Eevee", 55, 10, 8, "Tackle", 10)
+snorlax = Pokemon("Snorlax", 160, 11, 10, "Body Slam", 20)
+meowth = Pokemon("Meowth", 40, 9, 7, "Scratch", 10)
+
+# Fire types - FireType(name, max_hp, attack, defence, move, move_power, burn_chance)
+charmander = FireType("Charmander", 39, 12, 8, "Ember", 10, 0.2)
+vulpix = FireType("Vulpix", 38, 9, 8, "Flamethrower", 22, 0.1)
+ponyta = FireType("Ponyta", 50, 17, 11, "Flame Charge", 12, 0.1)
+
+# Water types - WaterType(name, max_hp, attack, defence, move, move_power, swim_speed)
+squirtle = WaterType("Squirtle", 44, 9, 10, "Water Gun", 10, 5)
+psyduck = WaterType("Psyduck", 50, 10, 9, "Water Pulse", 15, 4)
+staryu = WaterType("Staryu", 30, 9, 11, "Swift", 15, 7)
+
+print(pikachu)
+print(charmander)
+print(squirtle)

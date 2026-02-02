@@ -18,11 +18,17 @@ class Pokemon:
         move_power: int,
     ) -> None:
         """Initialise a new Pokemon."""
-        pass
+        self.name: str = name
+        self.max_hp: int = max_hp
+        self.current_hp: int = max_hp
+        self.attack: int = attack
+        self.defence: int = defence
+        self.move: str = move
+        self.move_power: int = move_power
 
     def take_damage(self, amount: int) -> None:
         """Reduce current_hp by amount (minimum 0)."""
-        self.current_hp = max(0, self.current_hp - amount)
+        self.current_hp: int = max(0, self.current_hp - amount)
 
     def calculate_damage(self, defender: "Pokemon") -> int:
         """Calculate damage dealt to defender.
@@ -36,20 +42,21 @@ class Pokemon:
 
     def is_fainted(self) -> bool:
         """Check if the Pokemon has fainted."""
-        pass
+        fainted: bool = True and self.current_hp <= 0 or False
+        return fainted
 
     def attack_move(self) -> str:
         """Return the attack message for this Pokemon."""
-        pass
+        
+        return f"{self.name} uses {self.move} !"
 
     def description(self) -> str:
         """Return a description of this Pokemon."""
-        pass
+        return f"{self.name} is a {self.__class__.__name__} type."
 
     def __str__(self) -> str:
         """Return a string representation of this Pokemon."""
-        pass
-
+        return f"{self.name} (HP: {self.current_hp}/{self.max_hp})"
 
 class FireType(Pokemon):
     """A Fire type Pokemon."""
@@ -65,12 +72,18 @@ class FireType(Pokemon):
         burn_chance: float,
     ) -> None:
         """Initialise a new Fire type Pokemon."""
-        pass
+        self.name: str = name
+        self.max_hp: int = max_hp
+        self.current_hp: int = max_hp
+        self.attack: int = attack
+        self.defence: int = defence
+        self.move: str = move
+        self.move_power: int = move_power
+        self.burn_chance: float = burn_chance
 
     def description(self) -> str:
         """Return a description of this Fire type Pokemon."""
-        pass
-
+        return f"{self.name} is a Fire type Pokemon with a {self.burn_chance * 100}% chance to burn with attacks."
 
 class WaterType(Pokemon):
     """A Water type Pokemon."""
@@ -86,8 +99,15 @@ class WaterType(Pokemon):
         swim_speed: int,
     ) -> None:
         """Initialise a new Water type Pokemon."""
-        pass
+        self.name: str = name
+        self.max_hp: int = max_hp
+        self.current_hp: int = max_hp
+        self.attack: int = attack
+        self.defence: int = defence
+        self.move: str = move
+        self.move_power: int = move_power
+        self.swim_speed: int = swim_speed
 
     def description(self) -> str:
         """Return a description of this Water type Pokemon."""
-        pass
+        return f"{self.name} is a Water type Pokemon with a swim speed of {self.swim_speed}."

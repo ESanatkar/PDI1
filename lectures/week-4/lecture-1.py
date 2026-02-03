@@ -13,7 +13,6 @@ class Song:
     def __init__(self, title: str, artist: str):
         self.title: str = title
         self.artist: str = artist
-
         self.played = False
     
     def play(self):

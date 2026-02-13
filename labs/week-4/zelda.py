@@ -12,6 +12,14 @@ class Item:
     def __repr__(self) -> str:
         return f"Item('{self.name}', value={self.value}, qty={self.quantity})"
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Item):
+            return False
+        return self.name == other.name
+
+    def __hash__(self) -> int:
+        return hash(self.name)
+
 
 class Weapon:
     """A weapon that can be equipped."""
@@ -31,6 +39,14 @@ class Weapon:
     def __repr__(self) -> str:
         return f"Weapon('{self.name}', dmg={self.damage}, dur={self.durability})"
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Weapon):
+            return False
+        return self.name == other.name
+
+    def __hash__(self) -> int:
+        return hash(self.name)
+
 
 class Enemy:
     """An enemy that Link can encounter."""
@@ -47,6 +63,16 @@ class Enemy:
     def __repr__(self) -> str:
         return f"Enemy('{self.name}', hp={self.health}, str={self.strength})"
 
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Enemy):
+            return False
+        return self.name == other.name
+
+    def __lt__(self, other: object) -> bool:
+        if not isinstance(other, Enemy):
+            return NotImplemented
+        return self.strength < other.strength
+
 
 class Inventory:
     """Link's inventory."""
@@ -57,6 +83,31 @@ class Inventory:
     def add_item(self, item: Item) -> None:
         """Add an item to the inventory."""
         self._items.append(item)
+
+    def __getitem__(self, key: int | slice) -> Item | list[Item]:
+        return self._items[key]
+
+    def __setitem__(self, key: int, value: Item) -> None:
+        self._items[key] = value
+
+    def __len__(self) -> int:
+        return len(self._items)
+
+    def __iter__(self):
+        for item in self._items:
+            yield item
+
+    def iter_valuable(self, min_value: int):
+        for item in self._items:
+            if item.value >= min_value:
+                yield item
+
+    def __contains__(self, item: object) -> bool:
+        if isinstance(item, str):
+            return any(i.name == item for i in self._items)
+        if isinstance(item, Item):
+            return any(i == item for i in self._items)
+        return False
 
 
 class Dungeon:
@@ -69,6 +120,28 @@ class Dungeon:
     def add_room(self, room: "Room") -> None:
         """Add a room to the dungeon."""
         self._rooms.append(room)
+
+    def __getitem__(self, key: int | slice) -> "Room" | list["Room"]:
+        return self._rooms[key]
+
+    def __len__(self) -> int:
+        return len(self._rooms)
+
+    def __iter__(self):
+        for room in self._rooms:
+            yield room
+
+    def __contains__(self, item: object) -> bool:
+        if isinstance(item, str):
+            return any(r.name == item for r in self._rooms)
+        if isinstance(item, Room):
+            return any(r.name == item.name for r in self._rooms)
+        return False
+
+    def iter_uncleared(self):
+        for room in self._rooms:
+            if not room.cleared:
+                yield room
 
 
 class Room:
@@ -92,6 +165,9 @@ class Room:
     def add_item(self, item: Item) -> None:
         """Add an item to the room."""
         self._items.append(item)
+
+    def __bool__(self) -> bool:
+        return len(self._enemies) > 0 and not self.cleared
 
 
 if __name__ == "__main__":

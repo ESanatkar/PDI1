@@ -41,3 +41,52 @@ print(Playlist.get_total_songs_added())  # 2
 
   Validation
 '''
+
+class Thermostat:
+    def __init__(self, temperature=20):
+        self.temperature = temperature
+    
+    @property
+    def temperature(self):
+        return self._temperature
+    
+    @temperature.setter
+    def temperature(self, value):
+        value = max(10, min(35, value))
+        self._temperature = round(value * 2) / 2
+
+t = Thermostat(22)
+t.temperature = 8
+print(t.temperature)   # 10.0
+
+t.temperature = 23.3
+print(t.temperature)   # 23.5
+
+'''
+# Exercise 3
+
+  Static & Class Variables
+'''
+
+class Player:
+    player_count = 0
+    
+    def __init__(self, name, score=0):
+        if not Player.is_valid_name(name):
+            raise ValueError("Must be a non-empty string with no more than 20 characters")
+        self.name = name
+        self.score = score
+        Player.player_count += 1
+    
+    @classmethod
+    def get_player_count(cls):
+        return cls.player_count
+    
+    @staticmethod
+    def is_valid_name(name):
+        return isinstance(name, str) and 0 < len(name) <= 20
+
+p1 = Player("Mario")
+p2 = Player("Waluigi")
+print(Player.get_player_count())     # 2
+print(Player.is_valid_name(""))      # False

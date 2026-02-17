@@ -69,3 +69,17 @@ class User(PlaylistObserver):
 
   Playlist Implementation
 '''
+
+
+playlist = ObservablePlaylist("Songs")
+
+user1 = User("Tyrese")
+user2 = User("Jeremiah")
+
+playlist.subscribe(user1)
+playlist.subscribe(user2)
+
+playlist.add_song(Song("Stronger", "Kanye West"))
+playlist.unsubscribe(user1)
+
+playlist.add_song(Song("Good Life", "Kanye West"))

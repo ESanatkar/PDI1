@@ -59,18 +59,6 @@ class Character(ABC):
             return f"{self._name} lost a life and is now dead! Lives: {self._lives}"
         return f"{self._name} lost a life! Lives: {self._lives}"
 
-    @abstractmethod
-    def jump(self):
-        pass
-
-    @abstractmethod
-    def run(self):
-        pass
-
-    @abstractmethod
-    def special_ability(self):
-        pass
-
     @classmethod
     def get_total_characters(cls):
         return cls.total_characters

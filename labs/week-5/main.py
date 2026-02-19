@@ -1,4 +1,3 @@
-from ty_extensions import Unknown
 from character import Character, Mario, Luigi, Peach, Toad
 from exceptions import CharacterDeadError, InvalidLivesError
 
@@ -12,7 +11,7 @@ def main():
 
     # Demonstrate polymorphism - same method, different behaviour
     print("--- Character Actions ---")
-    characters: list[Unknown | Mario | Luigi | Peach | Toad] = [mario, luigi, peach, toad]
+    characters= [mario, luigi, peach, toad]
     for character in characters:
         print(character.jump())
 

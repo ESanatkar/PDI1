@@ -1,85 +1,78 @@
+import copy
 from abc import ABC, abstractmethod
-
-'''
-# Exercise 2
-
-  Playlist Advanced
-'''
-
-class Song:
-    def __init__(self, title: str, artist: str):
-        self.title: str = title
-        self.artist: str = artist
-
-    def __str__(self) -> str:
-        return f'"{self.title}" by {self.artist}'
-
-
-class PlaylistObserver(ABC):
-    """Abstract base class for anything that wants to observe a playlist."""
-
-    @abstractmethod
-    def notify(self, playlist_name: str, song: Song) -> None:
-        """Notify the observer when a song is added to the playlist."""
-        print(f"Observer notified: {song} added to {playlist_name}")
-
-class ObservablePlaylist:
-    """A playlist that notifies observers when songs are added."""
-
-    def __init__(self, name: str):
-        self.name = name
-        self._songs: list[Song] = []
-        self._observers: list[PlaylistObserver] = []
-
-    def subscribe(self, observer: PlaylistObserver) -> None:
-        """Add an observer to the notification list."""
-        if observer not in self._observers:
-            self._observers.append(observer)
-
-    def unsubscribe(self, observer: PlaylistObserver) -> None:
-        """Remove an observer from the notification list."""
-        if observer in self._observers:
-            self._observers.remove(observer)
-
-    def _notify_all(self, song: Song) -> None:
-        """Notify all observers that a song was added."""
-        for observer in self._observers:
-            observer.notify(self.name, song)
-
-    def add_song(self, song: Song) -> None:
-        """Add a song to the playlist and notify observers."""
-        self._songs.append(song)
-        self._notify_all(song)
+from datetime import datetime
+import random
 
 '''
 # Exercise 1
 
-  User Class
+  Playlist Sorting
 '''
 
-class User(PlaylistObserver):
-    def __init__(self, username: str):
-        self.username: str = username
+class Song:
+    def __init__(self, title: str, artist: str, rating: float):
+        self.title: str = title
+        self.artist: str = artist
+        self.rating: int | float = rating
 
-    def notify(self, playlist_name: str, song: Song) -> None:
-        print(f"[{self.username}] \"{song.title}\" by {song.artist} was added to {playlist_name}")
+    def __repr__(self):
+        return f"{self.title} - {self.artist} (rating: {self.rating})"
 
-'''
-# Exercise 3
+class SortStrategy(ABC):
+    @abstractmethod
+    def sort(self, songs: list[Song]) -> list[Song]:
+        pass
+        
+class SortByTitle(SortStrategy):
+    def sort(self, songs: list[Song]) -> list[Song]:
+        return sorted(songs, key=lambda s: s.title)
 
-  Playlist Implementation
-'''
+class SortByRating(SortStrategy):
+    def sort(self, songs: list[Song]) -> list[Song]:
+        return sorted(songs, key=lambda s: s.rating, reverse=True)
+        
+class ShuffleSort(SortStrategy):
+    def sort(self, songs: list[Song]) -> list[Song]:
+        shuffled: list[Song] = copy.deepcopy(songs)
+        random.shuffle(shuffled)
+        return shuffled
+    
+class Playlist:
+    def __init__(self, name: str, strategy: SortStrategy):
+        self.name: str = name
+        self.strategy: SortStrategy = strategy
+        self.songs: list[Song] = []
 
+    def add(self, song: Song) -> None:
+        self.songs.append(song)
+        print(f"Added {song.title}, {song.artist} to {self.name} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}.")
 
-playlist = ObservablePlaylist("Songs")
+    def sort(self) -> None:
+        self.songs: list[Song] = self.strategy.sort(self.songs)
 
-user1 = User("Tyrese")
-user2 = User("Jeremiah")
+    def display(self) -> None:
+        print(f"Playlist: {self.name}")
+        for i, song in enumerate(self.songs, 1):
+            print(f"  {i}. {song}")
+            
+playlist = Playlist("Island Tunes", SortByTitle())
 
-playlist.subscribe(user1)
-playlist.subscribe(user2)
+playlist.add(Song("K.K. Bossa", "K.K. Slider", 4.5))
+playlist.add(Song("Bubblegum K.K.", "K.K. Slider", 4.9))
+playlist.add(Song("K.K. Cruisin'", "K.K. Slider", 4.2))
+playlist.add(Song("Stale Cupcakes", "K.K. Slider", 4.7))
+playlist.add(Song("K.K. Disco", "K.K. Slider", 3.8))
 
-playlist.add_song(Song("Stronger", "Kanye West"))
-playlist.unsubscribe(user1)
+# Sort and display the playlist
+playlist.sort()
+playlist.display() 
 
-playlist.add_song(Song("Good Life", "Kanye West"))
+# Change sort strategy to SortByRating
+playlist.strategy = SortByRating()
+playlist.sort()
+playlist.display()
+
+# Change sort strategy to ShuffleSort
+playlist.strategy = ShuffleSort()
+playlist.sort()
+playlist.display()

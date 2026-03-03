@@ -4,6 +4,12 @@ from unittest.mock import patch, Mock
 from requests.exceptions import Timeout
 from book_client import BookClient
 
+import requests
+
+resp = requests.get("https://nul-pdi.netlify.app/api/books", timeout=10)
+resp.raise_for_status()
+for book in resp.json():
+    print(f"{book["title"]} by {book["author"]}")
 
 @pytest.fixture
 def mock_success_response():

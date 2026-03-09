@@ -20,29 +20,24 @@ class SortByDistance(SortStrategy):
     """Sorts spawns ascending by distance (closest first)."""
 
     def sort(self, spawns: list[Spawn]) -> list[Spawn]:
-        pass  # TODO
+        return sorted(spawns, key=lambda s: s.distance_km)
 
 
 class SortByCP(SortStrategy):
     """Sorts spawns descending by CP (highest first)."""
 
     def sort(self, spawns: list[Spawn]) -> list[Spawn]:
-        pass  # TODO
+        return sorted(spawns, key=lambda s: s.cp, reverse=True)
 
 
 class NearbyList:
-    """Context class that delegates sorting to a strategy.
-
-    The strategy can be swapped at runtime using `set_strategy`.
-    """
+    """Context class that delegates sorting to a strategy."""
 
     def __init__(self, strategy: SortStrategy) -> None:
-        pass  # TODO
+        self._strategy: SortStrategy = strategy
 
     def set_strategy(self, strategy: SortStrategy) -> None:
-        """Replace the current sorting strategy."""
-        pass  # TODO
+        self._strategy: SortStrategy = strategy
 
     def generate(self, spawns: list[Spawn]) -> list[Spawn]:
-        """Return spawns sorted according to the current strategy."""
-        pass  # TODO
+        return self._strategy.sort(spawns)

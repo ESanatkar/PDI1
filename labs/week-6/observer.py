@@ -22,51 +22,44 @@ class Observer(ABC):
 
 
 class SpawnPoint:
-    """Subject that records nearby Pokémon spawns and notifies observers.
-
-    Args:
-        name: the name of this spawn point location.
-    """
+    """Subject that records nearby Pokémon spawns and notifies observers."""
 
     def __init__(self, name: str) -> None:
-        pass  # TODO
+        self.name = name
+        self._observers: list[Observer] = []
+        self._spawns: list[Spawn] = []
 
     def subscribe(self, observer: Observer) -> None:
-        """Add an observer to the notification list."""
-        pass  # TODO
+        if observer not in self._observers:
+            self._observers.append(observer)
 
     def unsubscribe(self, observer: Observer) -> None:
-        """Remove an observer from the notification list."""
-        pass  # TODO
+        if observer in self._observers:
+            self._observers.remove(observer)
 
     def spawn(self, name: str, cp: int, rarity: Rarity, distance_km: float) -> None:
-        """Record a new spawn and notify all subscribed observers."""
-        pass  # TODO
+        new_spawn = Spawn(name=name, cp=cp, rarity=rarity, distance_km=distance_km)
+        self._spawns.append(new_spawn)
+        for observer in self._observers:
+            observer.update(new_spawn)
 
     def get_all(self) -> list[Spawn]:
-        """Return a list of all recorded spawns."""
-        pass  # TODO
+        return self._spawns
 
 
 class PlayerAlert(Observer):
-    """Notifies a named player whenever any Pokémon spawns nearby.
-
-    Args:
-        player_name: the name of the player to alert.
-    """
+    """Notifies a named player whenever any Pokémon spawns nearby."""
 
     def __init__(self, player_name: str) -> None:
-        pass  # TODO
+        self.player_name: str = player_name
 
     def update(self, spawn: Spawn) -> None:
-        pass  # TODO
+        print(f"[Alert] {self.player_name}: {spawn.name} appeared {spawn.distance_km}km away (CP {spawn.cp})")
 
 
 class RareBroadcast(Observer):
-    """Broadcasts a message when a rare Pokémon spawns.
-
-    Prints nothing for common or uncommon spawns.
-    """
+    """Broadcasts a message when a rare Pokémon spawns."""
 
     def update(self, spawn: Spawn) -> None:
-        pass  # TODO
+        if spawn.rarity == "rare":
+            print(f"[Rare spawn] {spawn.name} appeared {spawn.distance_km}km away (CP {spawn.cp})")
